@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Panel - Agrifarma{% endblock %}
+
+{% block content %}
+  <h2>Admin Panel</h2>
+  <p class="lead">Manage users (consultants, vendors, farmers, customers)</p>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.username }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            <form method="post" action="{{ url_for('admin.change_role', user_id=u.id) }}" class="d-inline">
+              <select name="role" class="form-select form-select-sm d-inline w-auto">
+                {% for r in roles %}
+                  <option value="{{ r }}" {% if u.role == r %}selected{% endif %}>{{ r.title() }}</option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-sm btn-primary ms-2" type="submit">Update</button>
+            </form>
+          </td>
+          <td>
+            <form method="post" action="{{ url_for('admin.delete_user', user_id=u.id) }}" onsubmit="return confirm('Delete user {{ u.username }}?');" class="d-inline">
+              <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Consultant - Agrifarma{% endblock %}
+
+{% block content %}
+  <h2>Agricultural Consultants</h2>
+  <p class="lead">Get Expert Advice for Better Farming</p>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <p>
+        Connect with experienced agricultural consultants who can help you improve your crops, 
+        optimize farming techniques, and maximize yields. Whether you're dealing with crop diseases, 
+        soil issues, or looking to adopt new farming practices, our experts are here to help.
+      </p>
+    </div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+    <!-- Logged-in user view -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">👨‍⚕️ Available Consultants</h5>
+            <p class="card-text">Connect with experienced agricultural consultants who can provide personalized guidance for your farming needs.</p>
+            <a href="{{ url_for('auth.consultants_list') }}" class="btn btn-primary">View Consultants</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">📞 Schedule Sessions</h5>
+            <p class="card-text">Book one-on-one consultation sessions with specialists in your area of interest.</p>
+            <a href="{{ url_for('auth.consultants_list') }}" class="btn btn-primary">Browse & Book</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role-specific consultant content -->
+    {% if current_user.role == 'consultant' %}
+      <div class="alert alert-success">
+        <h5>Your Consultant Profile</h5>
+        <p>You are registered as a consultant. Manage your profile and availability below.</p>
+        <ul>
+          <li>View your profile and ratings</li>
+          <li>Manage consultation sessions</li>
+          <li>Track client bookings</li>
+          <li>Update expertise areas</li>
+          <li>View earnings and reviews</li>
+        </ul>
+      </div>
+    {% else %}
+      <div class="alert alert-info">
+        <p><strong>Interested in becoming a consultant?</strong></p>
+        <p>Share your agricultural expertise and help farmers succeed in their farming journey.</p>
+      </div>
+    {% endif %}
+
+    <!-- Consultation areas -->
+    <h4 class="mt-4">Areas of Expertise</h4>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🌾 Crop Management</h5>
+            <p>Advice on planting, cultivation, and harvest strategies</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🐛 Pest & Disease Control</h5>
+            <p>Solutions for managing pests and crop diseases</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🧪 Soil Management</h5>
+            <p>Soil testing, fertilization, and fertility improvement</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">💧 Irrigation & Water</h5>
+            <p>Efficient water management and irrigation techniques</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">📊 Sustainable Farming</h5>
+            <p>Organic farming and sustainable agricultural practices</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">💰 Farm Economics</h5>
+            <p>Cost reduction and profitability optimization</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% else %}
+    <!-- Not logged in view -->
+    <div class="alert alert-secondary">
+      <p><strong>Join us to connect with agricultural experts!</strong></p>
+      <p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register Now</a>
+        to book consultation sessions with experienced professionals.
+      </p>
+    </div>
+
+    <h4>Why Consult with Our Experts?</h4>
+    <ul>
+      <li>✓ Qualified and experienced agricultural professionals</li>
+      <li>✓ Personalized advice tailored to your crops and location</li>
+      <li>✓ Proven methods to increase yields</li>
+      <li>✓ Help with sustainable farming practices</li>
+      <li>✓ Support in managing common farming challenges</li>
+    </ul>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-0">📊 Admin Dashboard</h1>
+            <p class="text-muted">Manage your Agrifarma platform</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{{ url_for('admin.users') }}" class="btn btn-primary">
+                <i class="bi bi-people"></i> Manage Users
+            </a>
+        </div>
+    </div>
+
+    <!-- Key Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Total Users</p>
+                            <h3 class="mb-0">{{ stats.total_users }}</h3>
+                        </div>
+                        <div class="display-4 text-primary opacity-50">👥</div>
+                    </div>
+                    <small class="text-muted">Across all roles</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Total Posts</p>
+                            <h3 class="mb-0">{{ stats.total_posts }}</h3>
+                        </div>
+                        <div class="display-4 text-success opacity-50">📝</div>
+                    </div>
+                    <small class="text-muted">Blog posts</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Total Comments</p>
+                            <h3 class="mb-0">{{ stats.total_comments }}</h3>
+                        </div>
+                        <div class="display-4 text-info opacity-50">💬</div>
+                    </div>
+                    <small class="text-muted">On posts</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Total Likes</p>
+                            <h3 class="mb-0">{{ stats.total_likes }}</h3>
+                        </div>
+                        <div class="display-4 text-danger opacity-50">❤️</div>
+                    </div>
+                    <small class="text-muted">Post engagement</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Distribution -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-bottom">
+                    <h5 class="mb-0">👥 User Distribution by Role</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>👨‍💼 Admins</span>
+                                    <span class="badge bg-danger">{{ stats.role_stats.admin }}</span>
+                                </div>
+                                <div class="progress" role="progressbar">
+                                    <div class="progress-bar bg-danger" style="width: {% if stats.total_users > 0 %}{{ (stats.role_stats.admin / stats.total_users * 100) | int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>🌾 Farmers</span>
+                                    <span class="badge bg-success">{{ stats.role_stats.farmer }}</span>
+                                </div>
+                                <div class="progress" role="progressbar">
+                                    <div class="progress-bar bg-success" style="width: {% if stats.total_users > 0 %}{{ (stats.role_stats.farmer / stats.total_users * 100) | int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>🏪 Vendors</span>
+                                    <span class="badge bg-warning">{{ stats.role_stats.vendor }}</span>
+                                </div>
+                                <div class="progress" role="progressbar">
+                                    <div class="progress-bar bg-warning" style="width: {% if stats.total_users > 0 %}{{ (stats.role_stats.vendor / stats.total_users * 100) | int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>👨‍⚕️ Consultants</span>
+                                    <span class="badge bg-info">{{ stats.role_stats.consultant }}</span>
+                                </div>
+                                <div class="progress" role="progressbar">
+                                    <div class="progress-bar bg-info" style="width: {% if stats.total_users > 0 %}{{ (stats.role_stats.consultant / stats.total_users * 100) | int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>🛒 Customers</span>
+                                    <span class="badge bg-secondary">{{ stats.role_stats.customer }}</span>
+                                </div>
+                                <div class="progress" role="progressbar">
+                                    <div class="progress-bar bg-secondary" style="width: {% if stats.total_users > 0 %}{{ (stats.role_stats.customer / stats.total_users * 100) | int }}{% else %}0{% endif %}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-bottom">
+                    <h5 class="mb-0">⚙️ Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('admin.users') }}" class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>👥 Manage Users</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                            <small class="text-muted">Add, edit, or remove users</small>
+                        </a>
+                        <a href="{{ url_for('blog.list_posts') }}" class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>📝 Manage Blog Posts</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                            <small class="text-muted">View and manage all posts</small>
+                        </a>
+                        <a href="{{ url_for('auth.consultants_list') }}" class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>👨‍⚕️ Consultants</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                            <small class="text-muted">View all registered consultants</small>
+                        </a>
+                        <a href="{{ url_for('auth.products_list') }}" class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>📦 Marketplace</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                            <small class="text-muted">Manage products and marketplace</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Users -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">👤 Recent Users</h5>
+                    <a href="{{ url_for('admin.users') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% if recent_users %}
+                            {% for user in recent_users %}
+                                <div class="list-group-item px-4 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ user.username }}</h6>
+                                            <small class="text-muted">{{ user.email }}</small>
+                                        </div>
+                                        <span class="badge 
+                                            {% if user.role == 'admin' %}bg-danger
+                                            {% elif user.role == 'farmer' %}bg-success
+                                            {% elif user.role == 'vendor' %}bg-warning
+                                            {% elif user.role == 'consultant' %}bg-info
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ user.role }}
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="px-4 py-3 text-muted text-center">No users yet</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">📝 Recent Blog Posts</h5>
+                    <a href="{{ url_for('blog.list_posts') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% if recent_posts %}
+                            {% for post in recent_posts %}
+                                <div class="list-group-item px-4 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="flex-grow-1">
+                                            <a href="{{ url_for('blog.view_post', post_id=post.id) }}" class="text-decoration-none">
+                                                <h6 class="mb-1">{{ post.title[:50] }}{% if post.title|length > 50 %}...{% endif %}</h6>
+                                            </a>
+                                            <small class="text-muted">By {{ post.user.username }} • {{ post.created_at.strftime('%b %d, %Y') }}</small>
+                                        </div>
+                                        <span class="badge bg-light text-dark">
+                                            {{ post.like_count() }} <i class="bi bi-heart"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="px-4 py-3 text-muted text-center">No posts yet</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Overview -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light border-bottom">
+                    <h5 class="mb-0">📊 Platform Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">Engagement Rate</h6>
+                            <h3 class="text-primary">
+                                {% if stats.total_posts > 0 %}
+                                    {{ ((stats.total_comments + stats.total_likes) / stats.total_posts) | round(1) }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <small class="text-muted">Avg interactions per post</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">Active Users</h6>
+                            <h3 class="text-success">
+                                {% if stats.total_users > 0 %}
+                                    {{ ((stats.role_stats.farmer + stats.role_stats.consultant + stats.role_stats.vendor) / stats.total_users * 100) | round(0) | int }}%
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </h3>
+                            <small class="text-muted">Professional users</small>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6 class="text-muted">Content Health</h6>
+                            <h3 class="text-info">
+                                {% if stats.total_posts > 0 %}
+                                    {{ (stats.total_comments / stats.total_posts) | round(1) }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </h3>
+                            <small class="text-muted">Avg comments per post</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

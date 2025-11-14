@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Post Header -->
+            <div class="mb-5">
+                <h1>{{ post.title }}</h1>
+                <p class="text-muted">
+                    By <strong>{{ post.user.username }}</strong> • 
+                    {{ post.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                    {% if post.updated_at != post.created_at %}
+                        <em>(updated {{ post.updated_at.strftime('%B %d, %Y') }})</em>
+                    {% endif %}
+                </p>
+                <hr>
+            </div>
+
+            <!-- Post Image -->
+            {% if post.post_image %}
+                <div class="mb-5 text-center">
+                    <img src="{{ url_for('static', filename='uploads/' + post.post_image) }}" alt="{{ post.title }}" class="img-fluid rounded shadow-sm" style="max-height: 500px; object-fit: cover;">
+                </div>
+            {% endif %}
+
+            <!-- Post Content -->
+            <div class="card card-body mb-5 border-0 bg-light">
+                <p class="lead">{{ post.content }}</p>
+            </div>
+
+            <!-- Post Actions -->
+            <div class="mb-5">
+                <div class="d-flex gap-3 align-items-center">
+                    <!-- Like Button -->
+                    {% if current_user.is_authenticated %}
+                        <form method="POST" action="{{ url_for('blog.like_post', post_id=post.id) }}" style="display:inline;">
+                            <button type="submit" class="btn {% if post.is_liked_by(current_user) %}btn-danger{% else %}btn-outline-danger{% endif %} btn-sm">
+                                <i class="bi bi-heart-fill"></i> 
+                                {% if post.is_liked_by(current_user) %}Unlike{% else %}Like{% endif %}
+                                ({{ post.like_count() }})
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-heart"></i> Like ({{ post.like_count() }})
+                        </a>
+                    {% endif %}
+                    
+                    <span class="text-muted">
+                        <i class="bi bi-chat"></i> {{ comments|length }} Comments
+                    </span>
+
+                    <!-- Edit/Delete for Author/Admin -->
+                    {% if current_user.is_authenticated and (current_user.id == post.user_id or current_user.role == 'admin') %}
+                        <div class="ms-auto">
+                            <a href="{{ url_for('blog.edit_post', post_id=post.id) }}" class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <form method="POST" action="{{ url_for('blog.delete_post', post_id=post.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this post?')">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr class="my-5">
+
+            <!-- Comments Section -->
+            <div class="mb-5">
+                <h3 class="mb-4"><i class="bi bi-chat-left-text"></i> Comments</h3>
+
+                <!-- Comment Form -->
+                {% if current_user.is_authenticated %}
+                    <div class="card card-body mb-4 border-primary">
+                        <h5>Add a Comment</h5>
+                        <form method="POST" novalidate>
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ form.content(class="form-control form-control-lg", rows="3", placeholder="Share your thoughts...") }}
+                                {% if form.content.errors %}
+                                    <div class="text-danger mt-2">
+                                        {% for error in form.content.errors %}
+                                            <small>{{ error }}</small><br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-4">
+                        <a href="{{ url_for('auth.login') }}">Sign in</a> to post a comment
+                    </div>
+                {% endif %}
+
+                <!-- Display Comments -->
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="card card-body mb-3 border-0 bg-light">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="mb-0"><strong>{{ comment.user.username }}</strong></h6>
+                                    <small class="text-muted">{{ comment.created_at.strftime('%B %d, %Y at %I:%M %p') }}</small>
+                                </div>
+                                {% if current_user.is_authenticated and (current_user.id == comment.user_id or current_user.id == post.user_id or current_user.role == 'admin') %}
+                                    <form method="POST" action="{{ url_for('blog.delete_comment', comment_id=comment.id) }}" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-link text-danger" onclick="return confirm('Delete this comment?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                            <p class="mb-0">{{ comment.content }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center py-4">No comments yet. Be the first to comment!</p>
+                {% endif %}
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-5">
+                <a href="{{ url_for('blog.list_posts') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Posts
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

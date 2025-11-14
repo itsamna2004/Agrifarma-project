@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit User - Admin{% endblock %}
+
+{% block content %}
+  <h2>Edit user: {{ user.username }}</h2>
+  <form method="post" class="mt-3">
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input name="username" class="form-control" value="{{ user.username }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input name="email" class="form-control" type="email" value="{{ user.email }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-select w-auto">
+        {% for r in roles %}
+          <option value="{{ r }}" {% if user.role == r %}selected{% endif %}>{{ r.title() }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">New password (leave blank to keep current)</label>
+      <input name="password" class="form-control" type="password" autocomplete="new-password">
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a class="btn btn-secondary ms-2" href="{{ url_for('admin.index') }}">Cancel</a>
+  </form>
+{% endblock %}

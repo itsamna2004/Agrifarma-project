@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum - Agrifarma{% endblock %}
+
+{% block content %}
+  <h2>Community Forum</h2>
+  <p class="lead">Share Knowledge, Ask Questions, and Learn from Fellow Farmers</p>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <p>
+        Our community forum is a space where farmers, vendors, and consultants discuss challenges, 
+        share success stories, exchange best practices, and support each other in growing together.
+      </p>
+    </div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+    <!-- Logged-in user view -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">💬 Browse Discussions</h5>
+            <p class="card-text">Read discussions and answers from the community of farmers and agriculture professionals.</p>
+            <a href="{{ url_for('auth.discussions_list') }}" class="btn btn-primary">View Discussions</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">❓ Ask a Question</h5>
+            <p class="card-text">Post your farming questions and get answers from experts and fellow farmers.</p>
+            <a href="{{ url_for('auth.discussions_list') }}" class="btn btn-primary">Start Discussion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User stats -->
+    <div class="alert alert-light border">
+      <p><strong>{{ current_user.username }}</strong> | Role: <span class="badge bg-info">{{ current_user.role }}</span></p>
+    </div>
+
+  {% else %}
+    <!-- Not logged in view -->
+    <div class="alert alert-secondary">
+      <p><strong>Join our community forum!</strong></p>
+      <p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register</a>
+        to participate in discussions and get advice from experienced farmers and consultants.
+      </p>
+    </div>
+  {% endif %}
+
+  <!-- Forum Categories -->
+  <h4 class="mt-4">Forum Categories</h4>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">🌾 Crop-Specific Discussions</h5>
+          <p class="card-text">Talk about specific crops: rice, wheat, vegetables, fruits, etc.</p>
+          <p><small class="text-muted">25 discussions • 120 members</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">🐛 Pest & Disease Management</h5>
+          <p class="card-text">Share solutions and ask for help with pests and diseases.</p>
+          <p><small class="text-muted">18 discussions • 95 members</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">🧪 Soil & Fertilizer</h5>
+          <p class="card-text">Discuss soil health, testing, and fertilization strategies.</p>
+          <p><small class="text-muted">22 discussions • 110 members</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">💧 Irrigation & Water Management</h5>
+          <p class="card-text">Tips on efficient water use and irrigation systems.</p>
+          <p><small class="text-muted">15 discussions • 80 members</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">📊 Sustainable & Organic Farming</h5>
+          <p class="card-text">Share and learn about organic and sustainable practices.</p>
+          <p><small class="text-muted">20 discussions • 105 members</small></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="card-title">💰 Farm Business & Marketing</h5>
+          <p class="card-text">Discuss pricing, sales strategies, and business growth.</p>
+          <p><small class="text-muted">17 discussions • 90 members</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Guidelines -->
+  <div class="alert alert-info mt-4">
+    <h5>Community Guidelines</h5>
+    <ul>
+      <li>Be respectful and courteous to all members</li>
+      <li>Share knowledge and learn from others</li>
+      <li>No spam or commercial advertising (use Marketplace instead)</li>
+      <li>Provide constructive feedback and solutions</li>
+      <li>Report inappropriate content to moderators</li>
+    </ul>
+  </div>
+{% endblock %}

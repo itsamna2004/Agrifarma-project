@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Agrifarma{% endblock %}
+
+{% block content %}
+  <!-- Header Section -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <div style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); color: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(13, 71, 161, 0.2);">
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">
+          👋 Welcome, {{ current_user.username }}!
+        </h2>
+        <p style="font-size: 1.1rem; margin-bottom: 0; opacity: 0.95;">
+          <i class="bi bi-briefcase-fill"></i> 
+          <strong>Role:</strong> 
+          <span style="background-color: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px;">
+            {{ current_user.role | upper }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="row mb-5">
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div style="font-size: 2rem; color: #0d47a1; margin-bottom: 10px;">
+            <i class="bi bi-person-circle"></i>
+          </div>
+          <h6 style="color: #555; margin-bottom: 5px;">Profile Status</h6>
+          <p style="margin: 0;">
+            <span class="badge {% if current_user.profile_complete %}bg-success{% else %}bg-warning{% endif %} p-2">
+              {% if current_user.profile_complete %}✓ Complete{% else %}⚠ Incomplete{% endif %}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div style="font-size: 2rem; color: #0d47a1; margin-bottom: 10px;">
+            <i class="bi bi-envelope-open"></i>
+          </div>
+          <h6 style="color: #555; margin-bottom: 5px;">Email Verified</h6>
+          <p style="margin: 0;">
+            <span class="badge bg-success p-2">✓ Verified</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div style="font-size: 2rem; color: #0d47a1; margin-bottom: 10px;">
+            <i class="bi bi-calendar-event"></i>
+          </div>
+          <h6 style="color: #555; margin-bottom: 5px;">Member Since</h6>
+          <p style="margin: 0; font-weight: 600;">2025</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <div style="font-size: 2rem; color: #0d47a1; margin-bottom: 10px;">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h6 style="color: #555; margin-bottom: 5px;">Account Status</h6>
+          <p style="margin: 0;">
+            <span class="badge bg-success p-2">🟢 Active</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h3 class="section-title">⚡ Quick Actions</h3>
+    </div>
+    {% if current_user.profile_complete %}
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('auth.profile') }}" class="btn btn-block" style="background: linear-gradient(135deg, #0d47a1, #1565c0); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-person-check-fill" style="font-size: 1.5rem;"></i>
+            <div>
+              <div style="font-weight: 700;">View My Profile</div>
+              <small style="opacity: 0.8;">See your profile information</small>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% else %}
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('auth.complete_profile') }}" class="btn btn-block" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-exclamation-circle-fill" style="font-size: 1.5rem;"></i>
+            <div>
+              <div style="font-weight: 700;">Complete Your Profile</div>
+              <small style="opacity: 0.8;">Add phone, address, and bio</small>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endif %}
+
+    {% if current_user.role in ['farmer', 'vendor'] %}
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('auth.list_product') }}" class="btn btn-block" style="background: linear-gradient(135deg, #2e7d32, #43a047); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-plus-circle-fill" style="font-size: 1.5rem;"></i>
+            <div>
+              <div style="font-weight: 700;">📦 List New Product</div>
+              <small style="opacity: 0.8;">Add your products to marketplace</small>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endif %}
+
+    <div class="col-md-6 mb-3">
+      <a href="{{ url_for('blog.list_posts') }}" class="btn btn-block" style="background: linear-gradient(135deg, #1565c0, #0d47a1); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-journal-text" style="font-size: 1.5rem;"></i>
+          <div>
+            <div style="font-weight: 700;">📚 Read Blog Posts</div>
+            <small style="opacity: 0.8;">Explore knowledge from community</small>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <a href="{{ url_for('blog.create_post') }}" class="btn btn-block" style="background: linear-gradient(135deg, #7b1fa2, #6a1b9a); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-pencil-square" style="font-size: 1.5rem;"></i>
+          <div>
+            <div style="font-weight: 700;">✍️ Create Blog Post</div>
+            <small style="opacity: 0.8;">Share your knowledge</small>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <a href="{{ url_for('auth.marketplace') }}" class="btn btn-block" style="background: linear-gradient(135deg, #e65100, #f57c00); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-shop" style="font-size: 1.5rem;"></i>
+          <div>
+            <div style="font-weight: 700;">🛒 Browse Marketplace</div>
+            <small style="opacity: 0.8;">Explore products from farmers</small>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    {% if current_user.role == 'admin' %}
+      <div class="col-md-6 mb-3">
+        <a href="{{ url_for('admin.index') }}" class="btn btn-block" style="background: linear-gradient(135deg, #c62828, #d32f2f); color: white; padding: 15px; text-align: left; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-shield-lock-fill" style="font-size: 1.5rem;"></i>
+            <div>
+              <div style="font-weight: 700;">🔒 Admin Panel</div>
+              <small style="opacity: 0.8;">Manage users and platform</small>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Info Boxes -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 style="color: #0d47a1; font-weight: 700; margin-bottom: 15px;">
+            <i class="bi bi-lightbulb"></i> Tip for Your Role
+          </h6>
+          {% if current_user.role == 'farmer' %}
+            <p style="margin: 0; color: #555;">
+              Upload high-quality photos of your products to increase buyer interest. Include detailed descriptions and fair pricing for better sales!
+            </p>
+          {% elif current_user.role == 'vendor' %}
+            <p style="margin: 0; color: #555;">
+              Source products from multiple farmers to build a diverse inventory. Build long-term relationships with farmers for better pricing.
+            </p>
+          {% elif current_user.role == 'consultant' %}
+            <p style="margin: 0; color: #555;">
+              Share your expertise through blog posts. Help farmers solve problems and build your reputation in the community.
+            </p>
+          {% elif current_user.role == 'admin' %}
+            <p style="margin: 0; color: #555;">
+              Monitor platform activity, manage users, and ensure fair trading. Resolve disputes and maintain community standards.
+            </p>
+          {% else %}
+            <p style="margin: 0; color: #555;">
+              Browse the marketplace for fresh products from trusted farmers. Read blog posts for agricultural tips and knowledge.
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 style="color: #0d47a1; font-weight: 700; margin-bottom: 15px;">
+            <i class="bi bi-star-fill"></i> Features Available
+          </h6>
+          <ul style="margin: 0; padding-left: 20px; color: #555;">
+            <li>✓ Complete user profile</li>
+            <li>✓ Browse marketplace</li>
+            <li>✓ Read & write blog posts</li>
+            <li>✓ Join community discussions</li>
+            {% if current_user.role in ['farmer', 'vendor'] %}
+              <li>✓ List and manage products</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

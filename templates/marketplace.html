@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Marketplace - Agrifarma{% endblock %}
+
+{% block content %}
+  <h2>Marketplace</h2>
+  <p class="lead">Buy and Sell Quality Agricultural Products</p>
+
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <p>
+        Agrifarma Marketplace connects farmers and vendors directly with buyers. 
+        Browse fresh produce, connect with sellers, and support local agriculture.
+      </p>
+    </div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+    <!-- Logged-in user view -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">📦 Browse Products</h5>
+            <p class="card-text">Explore fresh agricultural products listed by farmers and vendors in your area.</p>
+            <a href="{{ url_for('auth.products_list') }}" class="btn btn-primary">Browse Products</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">📤 List Your Products</h5>
+            <p class="card-text">Are you a farmer or vendor? List your products and reach buyers directly.</p>
+            <a href="{{ url_for('auth.products_list') }}" class="btn btn-primary">List Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role-specific content -->
+    {% if current_user.role == 'farmer' %}
+      <div class="alert alert-info">
+        <h5>Farmer Dashboard</h5>
+        <p>You can list your agricultural products and manage orders from buyers.</p>
+        <ul>
+          <li>Add new crop listings</li>
+          <li>Manage inventory</li>
+          <li>Track orders and sales</li>
+          <li>Communicate with buyers</li>
+        </ul>
+      </div>
+    {% elif current_user.role == 'vendor' %}
+      <div class="alert alert-info">
+        <h5>Vendor Dashboard</h5>
+        <p>Connect with farmers to source quality products for your business.</p>
+        <ul>
+          <li>Browse farmer listings</li>
+          <li>Place bulk orders</li>
+          <li>Negotiate pricing</li>
+          <li>Build supplier relationships</li>
+        </ul>
+      </div>
+    {% elif current_user.role == 'customer' %}
+      <div class="alert alert-info">
+        <h5>Customer Shopping</h5>
+        <p>Buy fresh agricultural products directly from farmers and vendors.</p>
+        <ul>
+          <li>Browse fresh produce</li>
+          <li>Place orders</li>
+          <li>Track delivery</li>
+          <li>Leave reviews</li>
+        </ul>
+      </div>
+    {% endif %}
+
+  {% else %}
+    <!-- Not logged in view -->
+    <div class="alert alert-secondary">
+      <p><strong>Sign up to start buying and selling!</strong></p>
+      <p>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register as Farmer</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register as Vendor</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register as Customer</a>
+      </p>
+    </div>
+
+    <h4>Featured Categories</h4>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>🥬 Vegetables</h5>
+            <p>Fresh organic vegetables</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>🍎 Fruits</h5>
+            <p>Seasonal fresh fruits</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>🌾 Grains</h5>
+            <p>Premium quality grains</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5>🥛 Dairy</h5>
+            <p>Fresh dairy products</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

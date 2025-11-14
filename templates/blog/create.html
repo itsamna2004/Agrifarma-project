@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">📝 Create a New Post</h1>
+
+            <div class="card card-body border-0 shadow-sm">
+                <form method="POST" enctype="multipart/form-data" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <!-- Title Field -->
+                    <div class="mb-4">
+                        <label for="title" class="form-label"><strong>Post Title</strong></label>
+                        {% if form.title.errors %}
+                            {{ form.title(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.title.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.title(class="form-control form-control-lg", placeholder="Enter a catchy title...") }}
+                        {% endif %}
+                        <small class="text-muted">Minimum 5 characters, maximum 255</small>
+                    </div>
+
+                    <!-- Post Image -->
+                    <div class="mb-4">
+                        {{ form.post_image.label(class="form-label") }}
+                        <div class="input-group">
+                            <input class="form-control" type="file" id="post_image" name="post_image" accept="image/*">
+                        </div>
+                        <small class="text-muted d-block mt-1">Optional: Add an image to your post (up to 16MB)</small>
+                        {% if form.post_image.errors %}
+                            <div class="text-danger small">{{ form.post_image.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Content Field -->
+                    <div class="mb-4">
+                        <label for="content" class="form-label"><strong>Content</strong></label>
+                        {% if form.content.errors %}
+                            {{ form.content(class="form-control is-invalid", rows="10", placeholder="Write your post here...") }}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.content.errors %}
+                                    <small>{{ error }}</small><br>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.content(class="form-control", rows="10", placeholder="Write your post here. Share your agricultural knowledge, experiences, or tips...") }}
+                        {% endif %}
+                        <small class="text-muted">Minimum 10 characters</small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-flex gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                        <a href="{{ url_for('blog.list_posts') }}" class="btn btn-outline-secondary btn-lg">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

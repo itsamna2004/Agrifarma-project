@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Agrifarma{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2>About Agrifarma</h2>
+      <p class="lead">Connecting Farmers, Vendors, Consultants, and Customers in One Platform</p>
+
+      <h4 class="mt-4">Our Mission</h4>
+      <p>
+        Agrifarma is dedicated to revolutionizing agriculture by creating a transparent, efficient, and 
+        sustainable marketplace where farmers can sell directly to buyers, consultants can offer their expertise, 
+        and customers can access fresh, quality agricultural products.
+      </p>
+
+      <h4 class="mt-4">Our Vision</h4>
+      <p>
+        To build a thriving agricultural community where knowledge is shared, products are traded fairly, 
+        and every participant—from farmers to vendors to consultants—can grow and succeed together.
+      </p>
+
+      <h4 class="mt-4">Why Choose Agrifarma?</h4>
+      <ul>
+        <li><strong>Direct Connection:</strong> Farmers sell directly to buyers without middlemen</li>
+        <li><strong>Fair Pricing:</strong> Transparent pricing ensures fair deals for all parties</li>
+        <li><strong>Expert Advice:</strong> Access to agricultural consultants for crop improvement and best practices</li>
+        <li><strong>Community Support:</strong> Forum for farmers to discuss challenges and share solutions</li>
+        <li><strong>Reliability:</strong> Secure platform with trusted user verification</li>
+      </ul>
+
+      <h4 class="mt-4">Our Community</h4>
+      <p>
+        Agrifarma is home to thousands of farmers, vendors, consultants, and customers working together 
+        to build a better agricultural future. Whether you're looking to expand your market, source quality 
+        products, offer consulting services, or buy fresh produce, you'll find a supportive community here.
+      </p>
+
+      {% if current_user.is_authenticated %}
+        <div class="alert alert-info mt-4">
+          <p><strong>Welcome, {{ current_user.username }}!</strong></p>
+          <p>Ready to explore? Visit the <a href="{{ url_for('auth.dashboard') }}">Dashboard</a> to get started.</p>
+        </div>
+      {% else %}
+        <div class="alert alert-success mt-4">
+          <p><strong>Ready to join us?</strong></p>
+          <p>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register Now</a>
+            or <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary">Login</a>
+          </p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

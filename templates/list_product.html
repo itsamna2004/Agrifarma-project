@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">📦 List Your Product</h1>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Product Name -->
+                        <div class="mb-4">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control form-control-lg", placeholder="e.g., Fresh Tomatoes, Organic Rice") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger small">{{ form.name.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4">
+                            {{ form.category.label(class="form-label") }}
+                            {{ form.category(class="form-select form-select-lg") }}
+                            {% if form.category.errors %}
+                                <div class="text-danger small">{{ form.category.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Product Image -->
+                        <div class="mb-4">
+                            {{ form.product_image.label(class="form-label") }}
+                            <div class="input-group">
+                                <input class="form-control" type="file" id="product_image" name="product_image" accept="image/*">
+                            </div>
+                            <small class="text-muted d-block mt-1">Recommended: Clear, well-lit product photo (up to 16MB)</small>
+                            {% if form.product_image.errors %}
+                                <div class="text-danger small">{{ form.product_image.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control", rows="4", placeholder="Describe your product, quality, quantity, etc.") }}
+                            <small class="text-muted">Provide details about your product</small>
+                            {% if form.description.errors %}
+                                <div class="text-danger small">{{ form.description.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Price & Quantity -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                {{ form.price.label(class="form-label") }}
+                                <div class="input-group">
+                                    <span class="input-group-text">Rs</span>
+                                    {{ form.price(class="form-control form-control-lg", placeholder="0.00", step="0.01") }}
+                                </div>
+                                {% if form.price.errors %}
+                                    <div class="text-danger small">{{ form.price.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.quantity.label(class="form-label") }}
+                                {{ form.quantity(class="form-control form-control-lg", placeholder="e.g., 100 kg") }}
+                                {% if form.quantity.errors %}
+                                    <div class="text-danger small">{{ form.quantity.errors[0] }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-4">
+                            {{ form.location.label(class="form-label") }}
+                            {{ form.location(class="form-control form-control-lg", placeholder="City, State") }}
+                            <small class="text-muted">Where the product is available from</small>
+                            {% if form.location.errors %}
+                                <div class="text-danger small">{{ form.location.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="mb-4">
+                            {{ form.contact.label(class="form-label") }}
+                            {{ form.contact(class="form-control form-control-lg", placeholder="Your phone number", value=current_user.phone or '') }}
+                            <small class="text-muted">Buyers will use this to contact you</small>
+                            {% if form.contact.errors %}
+                                <div class="text-danger small">{{ form.contact.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.terms(class="form-check-input") }}
+                                {{ form.terms.label(class="form-check-label") }}
+                            </div>
+                            {% if form.terms.errors %}
+                                <div class="text-danger small">{{ form.terms.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-flex gap-2">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                            <a href="{{ url_for('auth.products_list') }}" class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+
+                    <!-- Info Box -->
+                    <div class="alert alert-info mt-4">
+                        <h6>💡 Tips for a successful listing:</h6>
+                        <ul class="mb-0 small">
+                            <li>Provide clear, accurate product description</li>
+                            <li>Upload a clear photo of your product</li>
+                            <li>Be competitive with pricing</li>
+                            <li>Include quantity and quality details</li>
+                            <li>Respond to inquiries promptly</li>
+                            <li>Keep accurate contact information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

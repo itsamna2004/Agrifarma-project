@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>📦 Agricultural Products Marketplace</h1>
+            <p class="text-muted">Browse fresh agricultural products from farmers and vendors</p>
+        </div>
+        <div class="col-md-4 text-end">
+            {% if current_user.is_authenticated and (current_user.role == 'farmer' or current_user.role == 'vendor') %}
+                <a href="{{ url_for('auth.list_product') }}" class="btn btn-primary">+ List Your Product</a>
+            {% elif current_user.is_authenticated %}
+                <span class="text-muted small">Only farmers and vendors can list products</span>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Register to List Products</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="mb-4">
+        <div class="btn-group" role="group">
+            <a href="{{ url_for('auth.products_list') }}" class="btn btn-outline-primary {% if selected_category is none %}active{% endif %}">All</a>
+            <a href="{{ url_for('auth.products_list', category='vegetables') }}" class="btn btn-outline-primary {% if selected_category == 'vegetables' %}active{% endif %}">🥬 Vegetables</a>
+            <a href="{{ url_for('auth.products_list', category='fruits') }}" class="btn btn-outline-primary {% if selected_category == 'fruits' %}active{% endif %}">🍎 Fruits</a>
+            <a href="{{ url_for('auth.products_list', category='grains') }}" class="btn btn-outline-primary {% if selected_category == 'grains' %}active{% endif %}">🌾 Grains</a>
+            <a href="{{ url_for('auth.products_list', category='dairy') }}" class="btn btn-outline-primary {% if selected_category == 'dairy' %}active{% endif %}">🥛 Dairy</a>
+            <a href="{{ url_for('auth.products_list', category='specialty') }}" class="btn btn-outline-primary {% if selected_category == 'specialty' %}active{% endif %}">🍯 Specialty</a>
+            <a href="{{ url_for('auth.products_list', category='inputs') }}" class="btn btn-outline-primary {% if selected_category == 'inputs' %}active{% endif %}">🧪 Inputs</a>
+        </div>
+    </div>
+
+    {% if products.items %}
+        <div class="row">
+            {% for product in products.items %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+                        {% if product.product_image %}
+                            <img src="{{ url_for('static', filename='uploads/' + product.product_image) }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px; font-size: 48px;">
+                                📦
+                            </div>
+                        {% endif %}
+                        <div class="card-body flex-grow-1">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted small">{{ product.description[:100] }}...</p>
+                            <div class="mb-2">
+                                <span class="badge bg-success">{{ product.category | replace('_', ' ') | title }}</span>
+                            </div>
+                            <p class="card-text">
+                                <strong class="text-primary">Rs {{ product.price }}</strong>
+                                <span class="text-muted small">• {{ product.quantity }} available</span>
+                            </p>
+                            <p class="card-text small text-muted">
+                                <i class="bi bi-geo-alt"></i> {{ product.location }}
+                            </p>
+                            <p class="card-text small text-muted">
+                                By <strong>{{ product.user.username }}</strong>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <button class="btn btn-sm btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#contactModal{{ product.id }}">
+                                <i class="bi bi-telephone"></i> Contact Seller
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Modal -->
+                    <div class="modal fade" id="contactModal{{ product.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{ product.name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="mb-2"><strong>Seller:</strong> {{ product.user.username }}</p>
+                                    <p class="mb-2"><strong>Price:</strong> Rs {{ product.price }}</p>
+                                    <p class="mb-2"><strong>Available:</strong> {{ product.quantity }}</p>
+                                    <p class="mb-2"><strong>Location:</strong> {{ product.location }}</p>
+                                    <hr>
+                                    <p><strong>Contact Seller:</strong></p>
+                                    <p class="mb-0">
+                                        <a href="tel:{{ product.contact }}" class="btn btn-sm btn-primary w-100 mb-2">
+                                            <i class="bi bi-telephone"></i> Call: {{ product.contact }}
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if products.pages > 1 %}
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('auth.products_list', page=products.prev_num, category=selected_category) }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for page_num in products.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num == products.page %}
+                                <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('auth.products_list', page=page_num, category=selected_category) }}">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('auth.products_list', page=products.next_num, category=selected_category) }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info text-center">
+            <h4>No products available</h4>
+            <p>Be the first to list a product!</p>
+            {% if current_user.is_authenticated and (current_user.role == 'farmer' or current_user.role == 'vendor') %}
+                <a href="{{ url_for('auth.list_product') }}" class="btn btn-primary mt-3">List Your Product</a>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary mt-3">Register as Farmer/Vendor</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="mt-5">
+        <a href="{{ url_for('auth.marketplace') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Marketplace
+        </a>
+    </div>
+</div>
+{% endblock %}

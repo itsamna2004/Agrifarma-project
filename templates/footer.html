@@ -1,0 +1,47 @@
+<footer style="background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); color: white; margin-top: 60px; padding: 40px 0;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 mb-4">
+				<h6 class="fw-bold mb-3">
+					<i class="bi bi-shop"></i> Agrifarma
+				</h6>
+				<p class="small opacity-75">Connecting farmers, vendors, consultants and customers to build a better agricultural community. Growing together, one harvest at a time.</p>
+			</div>
+			<div class="col-md-4 mb-4">
+				<h6 class="fw-bold mb-3">
+					<i class="bi bi-link-45deg"></i> Quick Links
+				</h6>
+				<ul class="list-unstyled small">
+					<li><a href="{{ url_for('auth.index') }}" class="text-white-50" style="text-decoration: none; transition: all 0.3s;">Home</a></li>
+					<li><a href="{{ url_for('auth.about') }}" class="text-white-50" style="text-decoration: none; transition: all 0.3s;">About Us</a></li>
+					<li><a href="{{ url_for('auth.marketplace') }}" class="text-white-50" style="text-decoration: none; transition: all 0.3s;">Marketplace</a></li>
+					<li><a href="{{ url_for('blog.list_posts') }}" class="text-white-50" style="text-decoration: none; transition: all 0.3s;">Blog</a></li>
+				</ul>
+			</div>
+			<div class="col-md-4 mb-4">
+				<h6 class="fw-bold mb-3">
+					<i class="bi bi-envelope"></i> Contact Us
+				</h6>
+				<p class="small opacity-75 mb-1">📧 support@agrifarma.com</p>
+				<p class="small opacity-75 mb-1">📞 +91 1234-567-890</p>
+				<p class="small opacity-75">🌍 India</p>
+			</div>
+		</div>
+		<hr style="background-color: rgba(255,255,255,0.2);">
+		<div class="row">
+			<div class="col-md-6 small opacity-75">
+				&copy; {{ current_year if current_year else '2025' }} Agrifarma. All rights reserved.
+			</div>
+			<div class="col-md-6 text-end small opacity-75">
+				Empowering Agriculture | Building Communities
+			</div>
+		</div>
+	</div>
+</footer>
+
+<style>
+	footer a:hover {
+		color: #4fc3f7 !important;
+		opacity: 1;
+	}
+</style>

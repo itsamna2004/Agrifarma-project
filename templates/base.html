@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{% block title %}Agrifarma{% endblock %}</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+		<style>
+			:root {
+				--primary-blue: #0d47a1;
+				--secondary-blue: #1565c0;
+				--light-blue: #4fc3f7;
+				--dark-gray: #263238;
+				--light-gray: #eceff1;
+			}
+			
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background-color: #f5f7fa;
+				color: var(--dark-gray);
+			}
+			
+			.btn-primary, .btn-info {
+				background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+				border: none;
+				font-weight: 600;
+				transition: all 0.3s ease;
+			}
+			
+			.btn-primary:hover, .btn-info:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+				background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+			}
+			
+			.btn-success {
+				background: linear-gradient(135deg, #2e7d32, #43a047);
+				border: none;
+				font-weight: 600;
+			}
+			
+			.btn-success:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+			}
+			
+			.card {
+				border: none;
+				border-radius: 12px;
+				transition: all 0.3s ease;
+				border-left: 4px solid var(--secondary-blue);
+			}
+			
+			.card:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 8px 16px rgba(13, 71, 161, 0.15);
+			}
+			
+			.alert {
+				border-radius: 8px;
+				border: none;
+				border-left: 4px solid;
+			}
+			
+			.alert-success {
+				border-left-color: #2e7d32;
+				background-color: #f1f8e9;
+				color: #2e7d32;
+			}
+			
+			.alert-info {
+				border-left-color: var(--secondary-blue);
+				background-color: #e3f2fd;
+				color: var(--primary-blue);
+			}
+			
+			.alert-danger {
+				border-left-color: #c62828;
+				background-color: #ffebee;
+				color: #c62828;
+			}
+			
+			.alert-warning {
+				border-left-color: #f57f17;
+				background-color: #fff3e0;
+				color: #f57f17;
+			}
+			
+			.form-control, .form-select {
+				border-radius: 8px;
+				border: 2px solid #e0e0e0;
+				transition: all 0.3s ease;
+			}
+			
+			.form-control:focus, .form-select:focus {
+				border-color: var(--secondary-blue);
+				box-shadow: 0 0 0 0.2rem rgba(13, 71, 161, 0.15);
+			}
+			
+			.badge {
+				padding: 6px 12px;
+				border-radius: 20px;
+				font-weight: 600;
+			}
+			
+			h1, h2, h3, h4, h5, h6 {
+				color: var(--dark-gray);
+				font-weight: 700;
+			}
+			
+			.section-title {
+				position: relative;
+				padding-bottom: 15px;
+				margin-bottom: 30px;
+			}
+			
+			.section-title::after {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 60px;
+				height: 4px;
+				background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+				border-radius: 2px;
+			}
+			
+			.breadcrumb {
+				background-color: transparent;
+				margin-bottom: 20px;
+			}
+			
+			.breadcrumb-item.active {
+				color: var(--secondary-blue);
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body>
+		{% include 'navbar.html' %}
+
+		{% block full_width %}{% endblock %}
+
+		<div class="container mt-4">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+				{% if messages %}
+					{% for category, message in messages %}
+						<div class="alert alert-{{ category }}" role="alert">
+							<i class="bi bi-info-circle"></i> {{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+
+			{% block content %}{% endblock %}
+		</div>
+
+		{% include 'footer.html' %}
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>
